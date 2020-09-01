@@ -1,14 +1,17 @@
 from PIL import Image, ImageDraw, ImageFont
 from config import Config, UI_OUT
 import pygame
+from adafruit_ssd1306 import SSD1306_I2C
+import busio
+try:
+    from board import SCL, SDA
+except:
+    pass
 
 
 class DisplayColor:
     BLACK = 0
     WHITE = 255
-
-
-PYGAME_IMAGE_MODE = 'RGBA'
 
 
 class Display:
@@ -19,24 +22,31 @@ class Display:
         self.draw = ImageDraw.Draw(self.image)
         self.pygame_instance = None
         self.pygame_screen = None
+        self.ssd1306 = None
 
         if Config.UI_OUT is UI_OUT.PYGAME:
             pygame.display.set_caption("PISDUP EMU")
             self.pygame_screen = pygame.display.set_mode(self.image.size)
+
+        if Config.UI_OUT is UI_OUT.SD11306:
+            self.ssd1306 = SSD1306_I2C(Config.DISPLAY_WIDTH, Config.DISPLAY_HEIGHT, busio.I2C(
+                SCL, SDA), addr=Config.I2C_DISPLAY_ADDR, reset=None)
+            self.ssd1306.fill(DisplayColor.BLACK)
 
     # Run this one to update image on screen
     def show(self):
         if Config.UI_OUT is UI_OUT.STATIC_IMAGE:
             self.image.show()
         elif Config.UI_OUT is UI_OUT.PYGAME:
-            image = self.image.convert(PYGAME_IMAGE_MODE)
-            image_bytes = image.tobytes('raw', PYGAME_IMAGE_MODE)
+            image = self.image.convert(Config.PYGAME_IMAGE_MODE)
+            image_bytes = image.tobytes('raw', Config.PYGAME_IMAGE_MODE)
             surface = pygame.image.fromstring(
                 image_bytes, image.size, image.mode).convert()
             self.pygame_screen.blit(surface, (0, 0))
             pygame.display.update()
         elif Config.UI_OUT is UI_OUT.SD11306:
-            raise Exception("UI output to SD11306 isn't supported yet")
+            self.ssd1306.image(self.image)
+            self.ssd1306.show()
         else:
             raise Exception("Unknown UI output")
 

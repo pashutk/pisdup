@@ -4,10 +4,10 @@ import subprocess
 from board import SCL, SDA
 import busio
 from PIL import Image, ImageDraw, ImageFont
-import adafruit_ssd1306
+from adafruit_ssd1306 import SSD1306_I2C
 
 i2c = busio.I2C(SCL, SDA)
-disp = adafruit_ssd1306.SSD1306_I2C(128, 64, i2c, addr=0x3c, reset=None)
+disp = SSD1306_I2C(128, 64, i2c, addr=0x3c, reset=None)
 disp.fill(0)
 disp.show()
 width = disp.width
@@ -29,6 +29,7 @@ while True:
     i = i + 1
     # disp.fill(0)
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
+
     # draw.rectangle((i, 0, i + 2, height), outline=0, fill=255)
     draw.line([i, 0, i, height], fill=255, width=1)
     disp.image(image)

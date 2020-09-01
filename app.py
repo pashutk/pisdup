@@ -9,6 +9,7 @@ from scene import Manager as SceneManager
 from io_event import IOEvent
 from devices_waiting import DevicesWaiting
 from scenes import SceneId
+from dummy import Dummy
 
 
 class MainAppState(Enum):
@@ -65,7 +66,9 @@ class App:
 
         sm.register_scene(DevicesWaiting(self.display, self.ee))
 
-        sm.go(SceneId.DEVICES_WAITING)
+        # sm.go(SceneId.DEVICES_WAITING)
+        sm.register_scene(Dummy(self.display))
+        sm.go(SceneId.DUMMY)
 
         while (True):
             if Config.ENABLE_CLI:
