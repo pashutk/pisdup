@@ -1,12 +1,12 @@
 from PIL import Image, ImageDraw, ImageFont
 from config import Config, UI_OUT
-import pygame
-from adafruit_ssd1306 import SSD1306_I2C
-import busio
-try:
+if Config.UI_OUT is UI_OUT.SD11306:
+    from adafruit_ssd1306 import SSD1306_I2C
+    import busio
     from board import SCL, SDA
-except:
-    pass
+
+if Config.UI_OUT is UI_OUT.PYGAME:
+    import pygame
 
 
 class DisplayColor:
