@@ -91,3 +91,10 @@ class Display:
             x = 0
 
         self.draw_white_text((x, 2), text)
+
+    def draw_centered_text(self, text):
+        w, h = self.textsize(text)
+        x = (self.image.width - w) // 2
+        y = (self.image.height - h) // 2
+
+        self.draw_white_text((x, y), text)
