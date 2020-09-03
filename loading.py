@@ -52,35 +52,51 @@ class Loading(DisplayScene):
             x = (128 - y_center) * p1 / p2 + x_center
             return (x, 128)
 
+        def sqr_xy(r):
+            return (x_center - r, y_center - r, x_center + r, y_center + r)
+
         def display_update(draw):
             d.draw_centered_text("Scanning for devices")
 
+            distance_between = 10
+
+            lines_count = d.image.height // distance_between
+
             i = state["time"]
-            i = i * 400
-            i = i % 1000
-            i = i / 1000
-            i = i * math.pi * 2
-            if i > math.pi:
-                # draw.line((64, 64) + y(i), 255)
-                pass
-            else:
-                draw.line(x(i) + (64, 64), 255)
+            i = i * 100
+            i = i % 360
 
-            def get_b(r):
-                return (x_center - r, y_center - r, x_center + r, y_center + r)
+            for line_num in range(1, lines_count + 1):
+                draw.arc(sqr_xy(line_num * distance_between),
+                         i - 7, i - 6, fill=255, width=1)
+                draw.arc(sqr_xy(line_num * distance_between),
+                         i - 5, i - 2, fill=255, width=1)
+                draw.arc(sqr_xy(line_num * distance_between),
+                         i, i + 7, fill=255, width=1)
 
-            def hcircle(r):
-                draw.arc(get_b(r), 180, 360, fill=255, width=1)
-            # draw.line((x_center, 0, x_center, 64), 255)
-            r = state["time"] - state["start_time"]
-            r = r * 50
+            # i = state["time"]
+            # i = i * 400
+            # i = i % 1000
+            # i = i / 1000
+            # i = i * math.pi * 2
+            # if i > math.pi:
+            #     # draw.line((64, 64) + y(i), 255)
+            #     pass
+            # else:
+            #     draw.line(x(i) + (64, 64), 255)
+
+            # def hcircle(r):
+            #     draw.arc(sqr_xy(r), 180, 360, fill=255, width=1)
+            # # draw.line((x_center, 0, x_center, 64), 255)
+            # r = state["time"] - state["start_time"]
+            # r = r * 50
+            # # r = r % max_r
+            # # r = pow(r, 2)
+            # # r = r * max_r
             # r = r % max_r
-            # r = pow(r, 2)
             # r = r * max_r
-            r = r % max_r
-            r = r * max_r
-            r = math.sqrt(r)
-            hcircle(r)
+            # r = math.sqrt(r)
+            # hcircle(r)
 
         d.use_draw(display_update)
         d.show()
