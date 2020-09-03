@@ -68,11 +68,11 @@ class Loading(DisplayScene):
 
             for line_num in range(1, lines_count + 1):
                 draw.arc(sqr_xy(line_num * distance_between),
-                         i - 7, i - 6, fill=255, width=1)
+                         i - 12, i - 11, fill=255, width=1)
                 draw.arc(sqr_xy(line_num * distance_between),
-                         i - 5, i - 2, fill=255, width=1)
+                         i - 10, i - 3, fill=255, width=1)
                 draw.arc(sqr_xy(line_num * distance_between),
-                         i, i + 7, fill=255, width=1)
+                         i, i + 13, fill=255, width=1)
 
             # i = state["time"]
             # i = i * 400
